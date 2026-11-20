@@ -1,0 +1,57 @@
+local pg=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+if pg:FindFirstChild("CS")then pg.CS:Destroy()end
+local g=Instance.new("ScreenGui",pg)g.Name="CS"g.ResetOnSpawn=false
+local function st(o,c,th)local s=Instance.new("UIStroke",o)s.Color=c;s.Thickness=th end
+
+-- Табличка
+local f=Instance.new("Frame",g)f.Size=UDim2.new(0,320,0,125)f.Position=UDim2.new(0.5,-160,0.15,0)f.BackgroundColor3=Color3.fromRGB(255,210,60)f.Active=true;f.Draggable=true
+Instance.new("UICorner",f).CornerRadius=UDim.new(0,20)st(f,Color3.fromRGB(45,25,10),4)
+
+local t=Instance.new("TextLabel",f)t.Size=UDim2.new(1,-20,1,-28)t.Position=UDim2.new(0,10,0,6)t.BackgroundTransparency=1;t.Text="Мой текст!"t.TextColor3=Color3.new(1,1,1)t.TextSize=28;t.Font=Enum.Font.FredokaOne;t.TextWrapped=true
+st(t,Color3.fromRGB(45,25,10),2.5)
+
+local wm=Instance.new("TextLabel",f)wm.Size=UDim2.new(0,120,0,18)wm.Position=UDim2.new(1,-128,1,-20)wm.BackgroundTransparency=1;wm.Text="sadery_boost"wm.TextColor3=Color3.fromRGB(45,25,10)wm.TextTransparency=0.25;wm.Font=Enum.Font.Cartoon;wm.TextSize=14;wm.TextXAlignment=1
+
+-- Меню
+local c=Instance.new("Frame",g)c.Size=UDim2.new(0,220,0,245)c.Position=UDim2.new(0.05,0,0.32,0)c.BackgroundColor3=Color3.fromRGB(100,200,255)c.Active=true;c.Draggable=true
+Instance.new("UICorner",c).CornerRadius=UDim.new(0,16)st(c,Color3.fromRGB(30,40,60),3.5)
+
+local b=Instance.new("TextBox",c)b.Size=UDim2.new(0.9,0,0,32)b.Position=UDim2.new(0.05,0,0.04,0)b.BackgroundColor3=Color3.new(1,1,1)b.TextColor3=Color3.new(0.1,0.1,0.1)b.PlaceholderText="Впиши текст..."b.Text=""b.Font=Enum.Font.FredokaOne;b.TextSize=15;b.ClearTextOnFocus=false
+Instance.new("UICorner",b).CornerRadius=UDim.new(0,10)
+b:GetPropertyChangedSignal("Text"):Connect(function()if b.Text~=""then t.Text=b.Text end end)
+
+local function btn(tx,x,y,w,col,fn)local bt=Instance.new("TextButton",c)bt.Size=UDim2.new(w,0,0,27)bt.Position=UDim2.new(x,0,y,0)bt.BackgroundColor3=col;bt.TextColor3=Color3.new(1,1,1)bt.Font=Enum.Font.FredokaOne;bt.TextSize=13;bt.Text=tx;Instance.new("UICorner",bt).CornerRadius=UDim.new(0,10)st(bt,Color3.fromRGB(30,40,60),2)bt.MouseButton1Click:Connect(fn)return bt end
+
+-- Размер текста
+btn("Текст -",0.05,0.20,0.43,Color3.fromRGB(255,110,110),function()t.TextSize=math.max(12,t.TextSize-3)end)
+btn("Текст +",0.52,0.20,0.43,Color3.fromRGB(110,220,110),function()t.TextSize=math.min(75,t.TextSize+3)end)
+
+-- Размер самой таблички
+btn("Рамка -",0.05,0.34,0.43,Color3.fromRGB(255,140,90),function()
+    local w=math.max(160,f.Size.X.Offset-30)
+    local h=math.max(70,f.Size.Y.Offset-15)
+    f.Size=UDim2.new(0,w,0,h)
+end)
+btn("Рамка +",0.52,0.34,0.43,Color3.fromRGB(90,210,170),function()
+    local w=math.min(700,f.Size.X.Offset+30)
+    local h=math.min(400,f.Size.Y.Offset+15)
+    f.Size=UDim2.new(0,w,0,h)
+end)
+
+-- Шрифт
+local fn={Enum.Font.FredokaOne,Enum.Font.Cartoon,Enum.Font.Arcade,Enum.Font.Bangers,Enum.Font.LuckiestGuy}local fi=1
+local fb=btn("Шрифт: FredokaOne",0.05,0.48,0.9,Color3.fromRGB(255,175,65),function()fi=fi%#fn+1;t.Font=fn[fi]end)
+fb.MouseButton1Click:Connect(function()fb.Text="Шрифт: "..fn[fi].Name end)
+
+-- Цвета текста и таблички
+local cl={Color3.new(1,1,1),Color3.fromRGB(255,80,80),Color3.fromRGB(90,235,110),Color3.fromRGB(80,180,255),Color3.fromRGB(255,210,60),Color3.fromRGB(255,115,190),Color3.fromRGB(185,115,255),Color3.fromRGB(45,45,55)}
+local ti,bi=1,5
+btn("Цвет текста",0.05,0.62,0.43,Color3.fromRGB(80,150,255),function()ti=ti%#cl+1;t.TextColor3=cl[ti]end)
+btn("Цвет фона",0.52,0.62,0.43,Color3.fromRGB(255,130,80),function()bi=bi%#cl+1;f.BackgroundColor3=cl[bi]end)
+
+-- Скрыть меню
+local op=Instance.new("TextButton",g)op.Size=UDim2.new(0,80,0,32)op.Position=UDim2.new(0.05,0,0.32,0)op.BackgroundColor3=Color3.fromRGB(100,200,255)op.TextColor3=Color3.new(1,1,1)op.Font=Enum.Font.FredokaOne;op.TextSize=15;op.Text="Меню"op.Visible=false;op.Active=true;op.Draggable=true
+Instance.new("UICorner",op).CornerRadius=UDim.new(0,12)st(op,Color3.fromRGB(30,40,60),3)
+
+btn("Скрыть меню",0.05,0.77,0.9,Color3.fromRGB(160,130,255),function()c.Visible=false;op.Visible=true end)MouseButton1Click:Connect(function()c.Visible=true;op.Visible=false end)
+op.
